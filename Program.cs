@@ -1,6 +1,7 @@
 using JsonApiDotNetCore.Configuration;
 using jsonapisample.Data;
 using jsonapisample.Models;
+using jsonapisample.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.SqlServer;
 
@@ -14,8 +15,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString, builderOptions => builderOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
 });
 
+builder.Services.AddScoped<LoginService>();
+
 int apiVersion = builder.Configuration.GetValue<int>("ApiVersion");
 builder.Services.AddJsonApi<AppDbContext>(options => options.Namespace = $"api/v{apiVersion}");
+
 
 WebApplication app = builder.Build();
 
